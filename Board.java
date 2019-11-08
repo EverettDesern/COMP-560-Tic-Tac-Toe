@@ -46,37 +46,59 @@ public class Board {
         }
         return true;
     }
-    public boolean isGameWon() {
+    public boolean isGameWon(int i, int j, int p) {
         // checks if a row, column, diagonal, and 3D space has the same value.. if so, the game is finished.
-        if(checkRow()) {
+        if(checkRow(j, p)) {
             return true;
         }
-        if(checkCol()) {
+        if(checkCol(i, p)) {
             return true;
         }
-        if(checkDiag()) {
+        if(checkDiag(i, j, p)) {
             return true;
         }
-        if(check3D()) {
+        if(check3D(i, j)) {
             return true;
         }
         return false;
     }
 
-    public boolean checkRow() {
+    public boolean checkRow(int j, int p) {
+        String val = this.gameBoard[0][j][p];
+        for(int i = 1; i < this.size; i++) {
+            if(this.gameBoard[i][j][p] != val) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkCol(int i, int p) {
+        String val = this.gameBoard[i][0][p];
+        for(int j = 1; j < this.size; j++) {
+            if(this.gameBoard[i][j][p] != val) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkDiag(int i, int j, int p) {
+        // need to implement this..
+        // we need to check right diag, left diag, and 3D diags.
         return false;
     }
 
-    public boolean checkCol() {
-        return false;
+    public boolean check3D(int i, int j) {
+        String val = this.gameBoard[i][j][0];
+        for(int p = 1; p < this.size; p++) {
+            if(this.gameBoard[i][j][p] != val) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public boolean checkDiag() {
-        return false;
-    }
-    public boolean check3D() {
-        return false;
-    }
 
 
 
