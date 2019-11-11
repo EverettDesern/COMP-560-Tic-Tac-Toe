@@ -1,4 +1,9 @@
 public class Board {
+    public int size;
+    public int currentPlayer;
+    public boolean won;
+    public boolean full;
+    public Tile[][][] gameBoard;
 
     public Board(int size) {
         this.size = size;
@@ -110,9 +115,9 @@ public class Board {
     }
 
     public boolean checkRow(int j, int p) {
-        String val = this.gameBoard[0][j][p];
+        String val = this.gameBoard[0][j][p].getValue();
         for(int i = 1; i < this.size; i++) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
         }
@@ -120,9 +125,9 @@ public class Board {
     }
 
     public boolean checkCol(int i, int p) {
-        String val = this.gameBoard[i][0][p];
+        String val = this.gameBoard[i][0][p].getValue();
         for(int j = 1; j < this.size; j++) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
         }
@@ -131,9 +136,9 @@ public class Board {
 
     public boolean checkLeftDiag(int p) {
         int j = 1;
-        String val = this.gameBoard[0][0][p];
+        String val = this.gameBoard[0][0][p].getValue();
         for(int i = 1; i < this.size; i++) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
             j++;
@@ -142,9 +147,9 @@ public class Board {
     }
     public boolean checkRightDiag(int p) {
         int j = 1;
-        String val = this.gameBoard[this.size-1][0][p];
+        String val = this.gameBoard[this.size-1][0][p].getValue();
         for(int i = this.size-1; i >= 0; i--) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
             j++;
@@ -155,9 +160,9 @@ public class Board {
     public boolean check3DLeftDiag() {
         int j = 0;
         int p = 0;
-        String val = this.gameBoard[0][0][0];
+        String val = this.gameBoard[0][0][0].getValue();
         for(int i = 1; i < this.size; i++) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
             j++;
@@ -169,9 +174,9 @@ public class Board {
     public boolean check3DRightDiag() {
         int j = 0;
         int p = 0;
-        String val = this.gameBoard[this.size-1][0][0];
+        String val = this.gameBoard[this.size-1][0][0].getValue();
         for(int i = this.size-2; i >= 0; i--) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
             j++;
@@ -182,9 +187,9 @@ public class Board {
     }
 
     public boolean check3D(int i, int j) {
-        String val = this.gameBoard[i][j][0];
+        String val = this.gameBoard[i][j][0].getValue();
         for(int p = 1; p < this.size; p++) {
-            if(this.gameBoard[i][j][p] != val) {
+            if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
         }
