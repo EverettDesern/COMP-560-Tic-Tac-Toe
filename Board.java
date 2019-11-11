@@ -13,6 +13,8 @@ public class Board {
         this.won = false;
         this.full = false;
         this.gameBoard = new Tile[size][size][size];
+
+        // fills 3D array of tile objects.
         for(int i = 0; i < this.size; i++) {
             for(int j = 0; j < this.size; j++) {
                 for(int p = 0; p < this.size; p++) {
@@ -22,6 +24,7 @@ public class Board {
         }
     }
 
+    // sets up a new game.
     public void newGame() {
         for(int i = 0; i < this.size; i++) {
             for(int j = 0; j < this.size; j++) {
@@ -33,18 +36,24 @@ public class Board {
         this.won = false;
         this.full = false;
     }
+
+    // allows human to place a tile.. humans have "X" as their symbol.
     public void humanMove(int i, int j, int p) {
         if(i > this.size-1 || j > this.size-1 || p > this.size-1) {
             return;
         }
         playerMove("X", i, j, p);
     }
+
+    // allows an AI to place a tile.. AIs have "O" as their symbol.
     public void aiMove(int i, int j, int p) {
         if(i > this.size-1 || j > this.size-1 || p > this.size-1) {
             return;
         }
         playerMove("O", i, j, p);
     }
+
+    // places the symbol onto the tile.. also checks if game is full or if someone won.
     public void playerMove(String symbol, int i, int j, int p) {
         if(this.gameBoard[i][j][p].getValue() == " ") {
             this.gameBoard[i][j][p].setValue(symbol);
@@ -63,6 +72,7 @@ public class Board {
         }
     }
 
+    // prints board
     public void printBoard() {
         for(int p = 0; p < this.size; p++) {
             for(int i = 0; i < this.size; i++) {
@@ -75,8 +85,8 @@ public class Board {
         }
     }
 
+    // checks if all moves have been made.
     public boolean isGameFull() {
-        // checks if all moves have been made.
         for(int i = 0; i < this.size; i++) {
             for(int j = 0; j < this.size; j++) {
                 for(int p = 0; p < this.size; p++) {
@@ -88,8 +98,9 @@ public class Board {
         }
         return true;
     }
+
+    // checks if a row, column, diagonal, and 3D space has the same value.. if so, the game is finished.
     public boolean isGameWon(int i, int j, int p) {
-        // checks if a row, column, diagonal, and 3D space has the same value.. if so, the game is finished.
         if(checkRow(j, p)) {
             return true;
         }

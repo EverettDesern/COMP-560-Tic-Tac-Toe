@@ -1,9 +1,12 @@
+import java.util.Scanner;
+
 public class TrainAI {
 
     public TrainAI() {
 
     }
 
+    // this method trains the AI by simulating an epoch amount of games.
     public void train(int epochs, AI AIOne, AI AITwo) {
         // AIOne is winningCounts[0] and AITwo is winningCounts[1]
         int[] winningCounts = new int[2];
@@ -13,15 +16,16 @@ public class TrainAI {
         for(int i = 0; i < epochs; i++) {
             Board newGame = new Board(4);
             while(newGame.won == false || newGame.full == false) {
-                // simulate a move
+                // simulate a move.. need to implement
 
                 rewardOrPunish(newGame, AIOne, AITwo);
             }
             
         }
-        // print utility values for each tile
+        // print utility values for each tile.. need to implement
     }
 
+    // this method checks which AI has won and rewards/punishes the AIs.
     public void rewardOrPunish(Board game, AI AIOne, AI AITwo) {
         if(game.currentPlayer == 0) {
             // if AIOne wins, reward it.
@@ -48,10 +52,14 @@ public class TrainAI {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter number of epochs");
         int num = scan.nextInt();
+        scan.close();
         TrainAI trainer = new TrainAI();
         trainer.train(num, AIOne, AITwo);
+
+        // once we reach here, we're done training and are ready to play against a human.
         AIOne.exploration = 0.0;
 
+        // while game is not full or won, play the game.
         while(game.won == false || game.full == false) {
             // play game
         }

@@ -5,8 +5,6 @@ public class Tile {
         this.value = " ";
     }
 
-
-
     public String getValue() {
         return this.value;
     }
