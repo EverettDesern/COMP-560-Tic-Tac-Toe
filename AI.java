@@ -7,9 +7,9 @@ public class AI {
         this.discount = 0.01;
     }
 
-    public void reward() {
+    public void reward(int value) {
 
-        
+
     }
 
 
