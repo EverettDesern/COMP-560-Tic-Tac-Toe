@@ -42,7 +42,7 @@ public class Board {
         if(i > this.size-1 || j > this.size-1 || p > this.size-1 || i < 0 || j < 0 || p < 0) {
             return;
         }
-        playerMove("X", i, j, p);
+        playerMove(1, i, j, p);
     }
 
     // allows an AI to place a tile.. AIs have "O" as their symbol.
@@ -50,12 +50,12 @@ public class Board {
         if(i > this.size-1 || j > this.size-1 || p > this.size-1 || i < 0 || j < 0 || p < 0) {
             return;
         }
-        playerMove("O", i, j, p);
+        playerMove(2, i, j, p);
     }
 
     // places the symbol onto the tile.. also checks if game is full or if someone won.
-    public void playerMove(String symbol, int i, int j, int p) {
-        if(this.gameBoard[i][j][p].getValue() == "_") {
+    public void playerMove(int symbol, int i, int j, int p) {
+        if(this.gameBoard[i][j][p].getValue() == 0) {
             this.gameBoard[i][j][p].setValue(symbol);
             printBoard();
         }
@@ -64,11 +64,11 @@ public class Board {
             return;
         }
         if(isGameWon(i, j, p)) {
-            if(symbol == "O") {
+            if(symbol == 2) {
                 System.out.println("You Lost!");
                 return;
             }
-            if(symbol == "X") {
+            if(symbol == 1) {
                 System.out.println("You Won!");
                 return;
             }
@@ -94,7 +94,7 @@ public class Board {
         for(int i = 0; i < this.size; i++) {
             for(int j = 0; j < this.size; j++) {
                 for(int p = 0; p < this.size; p++) {
-                    if(this.gameBoard[i][j][p].getValue() == "_") {
+                    if(this.gameBoard[i][j][p].getValue() == 0) {
                         return false;
                     }
                 }
@@ -130,8 +130,8 @@ public class Board {
     }
 
     public boolean checkRow(int j, int p) {
-        String val = this.gameBoard[0][j][p].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[0][j][p].getValue();
+        if(val == 0) {
             return false;
         }
         for(int i = 1; i < this.size; i++) {
@@ -143,8 +143,8 @@ public class Board {
     }
 
     public boolean checkCol(int i, int p) {
-        String val = this.gameBoard[i][0][p].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[i][0][p].getValue();
+        if(val == 0) {
             return false;
         }
         for(int j = 1; j < this.size; j++) {
@@ -157,8 +157,8 @@ public class Board {
 
     public boolean checkLeftDiag(int p) {
         int j = 1;
-        String val = this.gameBoard[0][0][p].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[0][0][p].getValue();
+        if(val == 0) {
             return false;
         }
         for(int i = 1; i < this.size; i++) {
@@ -171,8 +171,8 @@ public class Board {
     }
     public boolean checkRightDiag(int p) {
         int j = 0;
-        String val = this.gameBoard[this.size-1][0][p].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[this.size-1][0][p].getValue();
+        if(val == 0) {
             return false;
         }
         for(int i = this.size-1; i >= 0; i--) {
@@ -189,8 +189,8 @@ public class Board {
     public boolean check3DLeftDiag() {
         int j = 0;
         int p = 0;
-        String val = this.gameBoard[0][0][0].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[0][0][0].getValue();
+        if(val == 0) {
             return false;
         }
         for(int i = 0; i < this.size; i++) {
@@ -206,8 +206,8 @@ public class Board {
     public boolean check3DRightDiag() {
         int i = 0;
         int p = 0;
-        String val = this.gameBoard[0][this.size-1][0].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[0][this.size-1][0].getValue();
+        if(val == 0) {
             return false;
         }
         for(int j = this.size-1; j >= 0; j--) {
@@ -222,8 +222,8 @@ public class Board {
     }
 
     public boolean check3D(int i, int j) {
-        String val = this.gameBoard[i][j][0].getValue();
-        if(val == "_") {
+        int val = this.gameBoard[i][j][0].getValue();
+        if(val == 0) {
             return false;
         }
         for(int p = 1; p < this.size; p++) {

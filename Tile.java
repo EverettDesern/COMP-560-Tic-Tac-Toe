@@ -1,14 +1,14 @@
 public class Tile {
-    public String value;
+    public int value;
     public Tile() {
         // we can change this value to "X" or "O".
-        this.value = "_";
+        this.value = 0;
     }
 
-    public String getValue() {
+    public int getValue() {
         return this.value;
     }
-    public void setValue(String val) {
+    public void setValue(int val) {
         this.value = val;
     }
 }
