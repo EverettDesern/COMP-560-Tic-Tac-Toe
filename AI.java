@@ -6,8 +6,8 @@ public class AI {
     public double decay;
     public double discount;
     public int[] currentState;
-    public HashMap<double[][][], double[][][]> states;
-    public ArrayList<double[][][]> state_order;
+    public HashMap<Board, double[][][]> states;
+    public ArrayList<Board> state_order;
     public ArrayList<Point> actions;
 
 	public AI() {
@@ -29,7 +29,7 @@ public class AI {
         }
 
         // grab a state and an action from the stacks.
-        double[][][] newState = this.state_order.get(this.state_order.size()-1);
+        Board newState = this.state_order.get(this.state_order.size()-1);
         this.state_order.remove(this.state_order.size()-1);
 
         Point newAction = this.actions.get(this.actions.size()-1);
@@ -49,14 +49,7 @@ public class AI {
         this.states.put(newState, zero);
         double[][][] nextState = new double[4][4][4];
 
-        // copy the values of newState into nextState.
-        for(int i = 0; i < 4; i++) {
-            for(int j = 0; j < 4; j++) {
-                for(int p = 0; p < 4; p++) {
-                    nextState[i][j][p] = newState[i][j][p];
-                }
-            }
-        }
+
         // change the value of the action coordinates.
         nextState[newAction.i][newAction.j][newAction.p] = value;
 
@@ -66,7 +59,7 @@ public class AI {
         while(this.state_order.size() > 1) {
 
             // pop things from the stack
-            double[][][] state = this.state_order.get(this.state_order.size()-1);
+            Board state = this.state_order.get(this.state_order.size()-1);
             this.state_order.remove(this.state_order.size()-1);
     
             Point action = this.actions.get(this.actions.size()-1);
@@ -84,7 +77,7 @@ public class AI {
                 for(int i = 0; i < 4; i++) {
                     for(int j = 0; j < 4; j++) {
                         for(int p = 0; p < 4; p++) {
-                            nexttState[i][j][p] = state[i][j][p];
+                            nexttState[i][j][p] = 0.0;
                         }
                     }
                 }
@@ -99,7 +92,7 @@ public class AI {
                 for(int i = 0; i < 4; i++) {
                     for(int j = 0; j < 4; j++) {
                         for(int p = 0; p < 4; p++) {
-                            nexttState[i][j][p] = state[i][j][p];
+                            nexttState[i][j][p] = 0.0;
                         }
                     }
                 }
@@ -113,9 +106,10 @@ public class AI {
     
 
     // this method updates utility values.
-    public double[][][] temporalDifference(double reward, double[][][] key, double[][][] newKey) {
+    public double[][][] temporalDifference(double reward, Board key, Board newKey) {
         double[][][] state = new double[4][4][4];
         double[][][] updated = new double[4][4][4];
+        double[][][] actual = this.states.get(newKey);
         
         // checks if hashmap contains the matrix.
         if(states.containsKey(key)) {
@@ -134,8 +128,8 @@ public class AI {
                 for(int p = 0; p < 4; p++) {
 
                     // formula for temporal difference learning.
-                    newKey[i][j][p] = newKey[i][j][p] * reward;
-                    updated[i][j][p] = newKey[i][j][p] - state[i][j][p];
+                    actual[i][j][p] = actual[i][j][p] * reward;
+                    updated[i][j][p] = actual[i][j][p] - state[i][j][p];
                     updated[i][j][p] = updated[i][j][p] * this.learningRate;
                 }
             }
@@ -146,7 +140,7 @@ public class AI {
         return updated;
     }
 
-    public void setState(double[][][] old, Point action) {
+    public void setState(Board old, Point action) {
         this.state_order.add(old);
         this.actions.add(action);
     }
