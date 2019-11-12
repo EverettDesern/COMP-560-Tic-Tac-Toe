@@ -17,10 +17,10 @@ public class TrainAI {
             Board newGame = new Board(4);
             while(newGame.won == false || newGame.full == false) {
                 // simulate a move.. need to implement
-                int[] arr = AI.selectMove(newGame);
-                int e = arr[0];
-                int j = arr[1];
-                int p = arr[2];
+                Point coordinates = AIOne.selectMove(newGame);
+                int e = coordinates.i;
+                int j = coordinates.j;
+                int p = coordinates.p;
                 newGame.humanMove(e, j, p);
 
                 rewardOrPunish(newGame, AIOne, AITwo);
