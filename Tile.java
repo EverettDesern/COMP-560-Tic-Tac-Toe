@@ -2,7 +2,7 @@ public class Tile {
     public String value;
     public Tile() {
         // we can change this value to "X" or "O".
-        this.value = " ";
+        this.value = "_";
     }
 
     public String getValue() {

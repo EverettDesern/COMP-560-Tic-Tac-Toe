@@ -39,7 +39,7 @@ public class Board {
 
     // allows human to place a tile.. humans have "X" as their symbol.
     public void humanMove(int i, int j, int p) {
-        if(i > this.size-1 || j > this.size-1 || p > this.size-1) {
+        if(i > this.size-1 || j > this.size-1 || p > this.size-1 || i < 0 || j < 0 || p < 0) {
             return;
         }
         playerMove("X", i, j, p);
@@ -47,7 +47,7 @@ public class Board {
 
     // allows an AI to place a tile.. AIs have "O" as their symbol.
     public void aiMove(int i, int j, int p) {
-        if(i > this.size-1 || j > this.size-1 || p > this.size-1) {
+        if(i > this.size-1 || j > this.size-1 || p > this.size-1 || i < 0 || j < 0 || p < 0) {
             return;
         }
         playerMove("O", i, j, p);
@@ -55,19 +55,22 @@ public class Board {
 
     // places the symbol onto the tile.. also checks if game is full or if someone won.
     public void playerMove(String symbol, int i, int j, int p) {
-        if(this.gameBoard[i][j][p].getValue() == " ") {
+        if(this.gameBoard[i][j][p].getValue() == "_") {
             this.gameBoard[i][j][p].setValue(symbol);
             printBoard();
         }
         if(isGameFull()) {
             System.out.println("Tie!");
+            return;
         }
         if(isGameWon(i, j, p)) {
             if(symbol == "O") {
                 System.out.println("You Lost!");
+                return;
             }
             if(symbol == "X") {
                 System.out.println("You Won!");
+                return;
             }
         }
     }
@@ -77,7 +80,8 @@ public class Board {
         for(int p = 0; p < this.size; p++) {
             for(int i = 0; i < this.size; i++) {
                 for(int j = 0; j < this.size; j++) {
-                    System.out.println(this.gameBoard[i][j][p]);
+                    System.out.print(this.gameBoard[i][j][p].getValue());
+                    System.out.print(" ");
                 }
                 System.out.println(" ");
             }
@@ -90,7 +94,7 @@ public class Board {
         for(int i = 0; i < this.size; i++) {
             for(int j = 0; j < this.size; j++) {
                 for(int p = 0; p < this.size; p++) {
-                    if(this.gameBoard[i][j][p].getValue() == " ") {
+                    if(this.gameBoard[i][j][p].getValue() == "_") {
                         return false;
                     }
                 }
@@ -127,6 +131,9 @@ public class Board {
 
     public boolean checkRow(int j, int p) {
         String val = this.gameBoard[0][j][p].getValue();
+        if(val == "_") {
+            return false;
+        }
         for(int i = 1; i < this.size; i++) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
@@ -137,6 +144,9 @@ public class Board {
 
     public boolean checkCol(int i, int p) {
         String val = this.gameBoard[i][0][p].getValue();
+        if(val == "_") {
+            return false;
+        }
         for(int j = 1; j < this.size; j++) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
@@ -148,6 +158,9 @@ public class Board {
     public boolean checkLeftDiag(int p) {
         int j = 1;
         String val = this.gameBoard[0][0][p].getValue();
+        if(val == "_") {
+            return false;
+        }
         for(int i = 1; i < this.size; i++) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
@@ -157,13 +170,18 @@ public class Board {
         return true;
     }
     public boolean checkRightDiag(int p) {
-        int j = 1;
+        int j = 0;
         String val = this.gameBoard[this.size-1][0][p].getValue();
+        if(val == "_") {
+            return false;
+        }
         for(int i = this.size-1; i >= 0; i--) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
-            j++;
+            if(j < this.size) {
+                j++;
+            }
         }
         return true;
     }
@@ -172,7 +190,10 @@ public class Board {
         int j = 0;
         int p = 0;
         String val = this.gameBoard[0][0][0].getValue();
-        for(int i = 1; i < this.size; i++) {
+        if(val == "_") {
+            return false;
+        }
+        for(int i = 0; i < this.size; i++) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
@@ -183,14 +204,17 @@ public class Board {
         return true;
     }
     public boolean check3DRightDiag() {
-        int j = 0;
+        int i = 0;
         int p = 0;
-        String val = this.gameBoard[this.size-1][0][0].getValue();
-        for(int i = this.size-2; i >= 0; i--) {
+        String val = this.gameBoard[0][this.size-1][0].getValue();
+        if(val == "_") {
+            return false;
+        }
+        for(int j = this.size-1; j >= 0; j--) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;
             }
-            j++;
+            i++;
             p++;
         }
 
@@ -199,6 +223,9 @@ public class Board {
 
     public boolean check3D(int i, int j) {
         String val = this.gameBoard[i][j][0].getValue();
+        if(val == "_") {
+            return false;
+        }
         for(int p = 1; p < this.size; p++) {
             if(this.gameBoard[i][j][p].getValue() != val) {
                 return false;

@@ -17,6 +17,11 @@ public class TrainAI {
             Board newGame = new Board(4);
             while(newGame.won == false || newGame.full == false) {
                 // simulate a move.. need to implement
+                int[] arr = AI.selectMove(newGame);
+                int e = arr[0];
+                int j = arr[1];
+                int p = arr[2];
+                newGame.humanMove(e, j, p);
 
                 rewardOrPunish(newGame, AIOne, AITwo);
             }
@@ -48,8 +53,13 @@ public class TrainAI {
         // player 1
         AI AITwo = new AI();
         Board game = new Board(4);
+        //game.humanMove(0,0,0);
+        //game.humanMove(1,1,1);
+        //game.humanMove(2,2,2);
+        //game.humanMove(3,3,3);
+        //game.printBoard();
 
-        Scanner scan = new Scanner(System.in);
+        /*Scanner scan = new Scanner(System.in);
         System.out.println("Enter number of epochs");
         int num = scan.nextInt();
         scan.close();
@@ -63,6 +73,7 @@ public class TrainAI {
         while(game.won == false || game.full == false) {
             // play game
         }
+        */
     }
 
 
