@@ -165,6 +165,7 @@ public class AI {
         } else {
             action = exploit(board);
         }
+        setState(board, action);
         return action;
     }
 
