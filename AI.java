@@ -1,6 +1,7 @@
 import java.util.*;
+
     
-public class AI {
+    public class AI {
 	public double learningRate;
     public double exploration;
     public double decay;
@@ -9,9 +10,11 @@ public class AI {
     public HashMap<Board, double[][][]> states;
     public ArrayList<Board> state_order;
     public ArrayList<Point> actions;
+    public int wins;
 
 	public AI() {
         this.learningRate = 0.3;
+        this.wins = 0;
         this.exploration = 0.9;
         this.decay = 0.01;
         this.discount = 0.01;
@@ -186,7 +189,38 @@ public class AI {
 
     public Point exploit(Board board) {
         double[][][] value = this.states.get(board);
-        
+        HashMap<Point, Double> link = new HashMap<>();
+        List<Point> coords = new ArrayList<>();
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
+                    if(board.gameBoard[i][j][p].getValue() == 0) {
+                        coords.add(new Point(i, j, p));
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
+                    Point temp = new Point(i,j,p);
+                    if(coords.contains(temp)) {
+                        link.put(temp, value[i][j][p]);
+                    }
+                }
+            }
+        }
+        double max = Collections.max(link.values());
+        List<Point> indexes = new ArrayList<>();
+        for (Map.Entry<Point, Double> entry : link.entrySet()) {
+            if (entry.getValue()==max) {
+                indexes.add(entry.getKey());
+            }
+        }
+        Random rand = new Random();
+        Point random = coords.get(rand.nextInt(coords.size()));
+        return random;
+
     }
 
 

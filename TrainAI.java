@@ -15,31 +15,45 @@ public class TrainAI {
 
         for(int i = 0; i < epochs; i++) {
             Board newGame = new Board(4);
-            while(newGame.won == false || newGame.full == false) {
+            while(newGame.won == 0 && newGame.full == false) {
                 // simulate a move.. need to implement
                 Point coordinates = AIOne.selectMove(newGame);
                 int e = coordinates.i;
                 int j = coordinates.j;
                 int p = coordinates.p;
                 newGame.humanMove(e, j, p);
+                if(!(newGame.won == 0 && newGame.full == false)) {
+                    rewardOrPunish(newGame, AIOne, AITwo);
+                    break;
+                }
 
-                rewardOrPunish(newGame, AIOne, AITwo);
+                Point coordinates2 = AITwo.selectMove(newGame);
+                int t = coordinates2.i;
+                int b = coordinates2.j;
+                int c = coordinates2.p;
+                newGame.aiMove(t,b,c);
+                if(!(newGame.won == 0 && newGame.full == false)) {
+                    rewardOrPunish(newGame, AIOne, AITwo);
+                    break;
+                }
             }
-            
+            System.out.println("AIOne wins: " + AIOne.wins + " AITwo win: " + AITwo.wins);
         }
         // print utility values for each tile.. need to implement
     }
 
     // this method checks which AI has won and rewards/punishes the AIs.
     public void rewardOrPunish(Board game, AI AIOne, AI AITwo) {
-        if(game.currentPlayer == 0) {
+        if(game.won == 1) {
             // if AIOne wins, reward it.
             AIOne.reward(1);
             AITwo.reward(-1);
-        } else if(game.currentPlayer == 1) {
+            AIOne.wins += 1;
+        } else if(game.won == 2) {
             // if AITwo wins, reward it
             AIOne.reward(-1);
             AITwo.reward(1);
+            AITwo.wins += 1;
         } else {
             // if no one wins, nothing happens
             AIOne.reward(0);
@@ -59,7 +73,7 @@ public class TrainAI {
         //game.humanMove(3,3,3);
         //game.printBoard();
 
-        /*Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         System.out.println("Enter number of epochs");
         int num = scan.nextInt();
         scan.close();
@@ -67,13 +81,13 @@ public class TrainAI {
         trainer.train(num, AIOne, AITwo);
 
         // once we reach here, we're done training and are ready to play against a human.
-        AIOne.exploration = 0.0;
+        //AIOne.exploration = 0.0;
 
         // while game is not full or won, play the game.
-        while(game.won == false || game.full == false) {
+        //while(game.won == false || game.full == false) {
             // play game
-        }
-        */
+        //}
+        //*/
     }
 
 

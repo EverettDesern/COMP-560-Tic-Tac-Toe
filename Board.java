@@ -1,7 +1,7 @@
 public class Board {
     public int size;
     public int currentPlayer;
-    public boolean won;
+    public int won;
     public boolean full;
     public Tile[][][] gameBoard;
 
@@ -10,7 +10,7 @@ public class Board {
         // currentPlayer == 0 if human is next.
         // currentPlayer == 1 if AI is next.
         this.currentPlayer = 0;
-        this.won = false;
+        this.won = 0;
         this.full = false;
         this.gameBoard = new Tile[size][size][size];
 
@@ -33,7 +33,7 @@ public class Board {
                 }
             }
         }
-        this.won = false;
+        this.won = 0;
         this.full = false;
     }
 
@@ -57,19 +57,23 @@ public class Board {
     public void playerMove(int symbol, int i, int j, int p) {
         if(this.gameBoard[i][j][p].getValue() == 0) {
             this.gameBoard[i][j][p].setValue(symbol);
-            printBoard();
+            //printBoard();
         }
         if(isGameFull()) {
             System.out.println("Tie!");
+            this.won = 0;
+            this.full = true;
             return;
         }
         if(isGameWon(i, j, p)) {
             if(symbol == 2) {
                 System.out.println("You Lost!");
+                this.won = 2;
                 return;
             }
             if(symbol == 1) {
                 System.out.println("You Won!");
+                this.won = 1;
                 return;
             }
         }
