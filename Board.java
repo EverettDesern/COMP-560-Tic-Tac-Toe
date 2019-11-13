@@ -57,7 +57,7 @@ public class Board {
     public void playerMove(int symbol, int i, int j, int p) {
         if(this.gameBoard[i][j][p] == 0) {
             this.gameBoard[i][j][p] = symbol;
-            printBoard();
+            //printBoard();
         }
         if(isGameFull()) {
             //System.out.println("Tie!");
@@ -136,6 +136,12 @@ public class Board {
             return true;
         }
         if(check3D(i, j)) {
+            return true;
+        }
+        if(checkOtherOne(i)) {
+            return true;
+        }
+        if(checkOtherTwo(j)) {
             return true;
         }
         return false;
@@ -245,9 +251,32 @@ public class Board {
         }
         return true;
     }
-
-
-
-
-
+    public boolean checkOtherOne(int i) {
+        int val = this.gameBoard[i][this.size-1][0];
+        if(val == 0) {
+            return false;
+        }
+        int j = this.size-1;
+        for(int p = 0; p < this.size; p++) {
+            if(this.gameBoard[i][j][p] != val) {
+                return false;
+            }
+            j--;
+        }
+        return true;
+    }
+    public boolean checkOtherTwo(int j) {
+        int val = this.gameBoard[this.size-1][j][0];
+        if(val == 0) {
+            return false;
+        }
+        int i = this.size-1;
+        for(int p = 0; p < this.size; p++) {
+            if(this.gameBoard[i][j][p] != val) {
+                return false;
+            }
+            i--;
+        }
+        return true;
+    }
 }

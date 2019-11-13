@@ -11,16 +11,21 @@ import java.util.*;
     public ArrayList<HashMap<String, Point>> state_order;
     public ArrayList<Point> actions;
     public int wins;
+    public boolean print;
+    //public float[][][] value;
 
 	public AI() {
-        this.learningRate = 0.3;
+        this.learningRate = 0.5;
         this.wins = 0;
         this.exploration = 0.9;
         this.decay = 0.01;
-        this.discount = 0.01;
+        this.discount = 0.9;
         states = new HashMap<>();
         state_order = new ArrayList<>();
         actions = new ArrayList<>();
+        print = false;
+        //float[][][] value;
+
     }
 
     // this method changes the utility values of each tile, based on if we are rewarding it
@@ -99,7 +104,8 @@ import java.util.*;
             Point action = mapp.get(state);
 
             // change the reward value by decaying it.
-            value *= this.discount;
+            value *= 1.5;
+
 
             // if states contains this board
             if(this.states.containsKey(state)) {
@@ -107,13 +113,18 @@ import java.util.*;
                 double use = result[newAction.i][newAction.j][newAction.p];
                 value += use;
                 float[][][] nexttState = this.states.get(state);
-                //System.out.println(action.i);
-                //System.out.println(action.j);
-                //System.out.println(action.p);
                 nexttState[action.i][action.j][action.p] = value;
                 this.states.replace(state, nexttState);
             } else {
-                this.states.put(state, zero);
+                float[][][] zeroo = new float[4][4][4];
+                for(int i = 0; i < 4; i++) {
+                    for(int j = 0; j < 4; j++) {
+                        for(int p = 0; p < 4; p++) {
+                            zeroo[i][j][p] = (float) 0.0;
+                        }
+                    }
+                }
+                this.states.put(state, zeroo);
                 float[][][] result = temporalDifference(value, state, newState);
                 float use = result[newAction.i][newAction.j][newAction.p];
                 value = use;
@@ -148,7 +159,7 @@ import java.util.*;
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
                 for(int p = 0; p < 4; p++) {
-                    actual[i][j][p] = (float) (actual[i][j][p] * 1.15);
+                    actual[i][j][p] = (float) (actual[i][j][p] * reward);
                 }
             }
         }
@@ -233,9 +244,22 @@ import java.util.*;
 
     public Point exploit(Board board) {
         String s = serialize(board);
+        //String zo = "0000000000000000000000000000000000000000000000000000000000000000";
         float[][][] value = this.states.get(s);
-        System.out.println(value);
-        //System.out.println("hi");
+        //System.out.println(value[0][0][0]);
+        if(this.print == true) {
+            //if(s == zo) {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    for (int p = 0; p < 4; p++) {
+                        System.out.print(value[i][j][p]);
+                        System.out.print(" ");
+                    }
+                    System.out.println(" ");
+                }
+                System.out.println(" ");
+            }
+        }
         HashMap<Point, Float> link = new HashMap<>();
         List<String> coords = new ArrayList<>();
         for(int i = 0; i < 4; i++) {

@@ -39,10 +39,22 @@ public class TrainAI {
                     break;
                 }
             }
-            System.out.println("AIOne wins: " + AIOne.wins + " AITwo win: " + AITwo.wins);
-            if(i == epochs-1) {
-                //System.out.println();
-            }
+            //System.out.println("AIOne wins: " + AIOne.wins + " AITwo win: " + AITwo.wins);
+            //if(i == epochs-2) {
+                //AIOne.print = true;
+                //for (int s = 0; s < 4; s++) {
+                    //for (int j = 0; j < 4; j++) {
+                        //for (int p = 0; p < 4; p++) {
+                            //if(AIOne.value[s][j][p] > 0) {
+                                //System.out.print(AIOne.value[s][j][p]);
+                                //System.out.print(" ");
+                            //}
+                        //}
+                        //System.out.println(" ");
+                    //}
+                    //System.out.println(" ");
+                //}
+            //}
         }
         // print utility values for each tile.. need to implement
     }
@@ -86,6 +98,7 @@ public class TrainAI {
 
         // once we reach here, we're done training and are ready to play against a human.
         AIOne.exploration = 0.0;
+        AIOne.print = true;
         Board humanGame = new Board(4);
         // while game is not full or won, play the game.
         while(humanGame.won == 0 && humanGame.full == false) {
