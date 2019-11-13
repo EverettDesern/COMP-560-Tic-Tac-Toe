@@ -57,7 +57,7 @@ public class Board {
     public void playerMove(int symbol, int i, int j, int p) {
         if(this.gameBoard[i][j][p].getValue() == 0) {
             this.gameBoard[i][j][p].setValue(symbol);
-            //printBoard();
+            printBoard();
         }
         if(isGameFull()) {
             System.out.println("Tie!");
@@ -81,10 +81,18 @@ public class Board {
 
     // prints board
     public void printBoard() {
+        System.out.println("NEW MOVE");
         for(int p = 0; p < this.size; p++) {
+            System.out.println("Dimension: " + (p+1));
             for(int i = 0; i < this.size; i++) {
                 for(int j = 0; j < this.size; j++) {
-                    System.out.print(this.gameBoard[i][j][p].getValue());
+                    if(this.gameBoard[i][j][p].getValue() == 0) {
+                        System.out.print("_");
+                    } else if(this.gameBoard[i][j][p].getValue() == 1) {
+                        System.out.print("X");
+                    } else if(this.gameBoard[i][j][p].getValue() == 2) {
+                        System.out.print("O");
+                    }
                     System.out.print(" ");
                 }
                 System.out.println(" ");
