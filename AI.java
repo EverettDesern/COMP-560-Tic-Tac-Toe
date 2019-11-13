@@ -48,6 +48,13 @@ public class AI {
         //initialize the hashmap value with 0.0.
         this.states.put(newState, zero);
         double[][][] nextState = new double[4][4][4];
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
+                    nextState[i][j][p] = zero[i][j][p];
+                }
+            }
+        }
 
 
         // change the value of the action coordinates.
@@ -73,14 +80,7 @@ public class AI {
                 double[][][] result = temporalDifference(value, state, newState);
                 double use = result[newAction.i][newAction.j][newAction.p];
                 value += use;
-                double[][][] nexttState = new double[4][4][4];
-                for(int i = 0; i < 4; i++) {
-                    for(int j = 0; j < 4; j++) {
-                        for(int p = 0; p < 4; p++) {
-                            nexttState[i][j][p] = 0.0;
-                        }
-                    }
-                }
+                double[][][] nexttState = this.states.get(state);
                 nexttState[action.i][action.j][action.p] = value;
                 this.states.replace(state, nexttState);
             } else {
@@ -88,16 +88,9 @@ public class AI {
                 double[][][] result = temporalDifference(value, state, newState);
                 double use = result[newAction.i][newAction.j][newAction.p];
                 value = use;
-                double[][][] nexttState = new double[4][4][4];
-                for(int i = 0; i < 4; i++) {
-                    for(int j = 0; j < 4; j++) {
-                        for(int p = 0; p < 4; p++) {
-                            nexttState[i][j][p] = 0.0;
-                        }
-                    }
-                }
-                nexttState[action.i][action.j][action.p] = value;
-                this.states.replace(state, nexttState);
+                //double[][][] nexttState = this.states.get(state);
+                zero[action.i][action.j][action.p] = value;
+                this.states.replace(state, zero);
             }
             newState = state;
             newAction = action;
@@ -164,11 +157,36 @@ public class AI {
     }
 
     public Point explore(Board board, int depth) {
+        List<Point> coords = new ArrayList<>();
+        Board pseudo = new Board(4);
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
+                    if(board.gameBoard[i][j][p].getValue() == 0) {
+                        coords.add(new Point(i, j, p));
+                    }
+                    pseudo.gameBoard[i][j][p].setValue(board.gameBoard[i][j][p].getValue());
+                }
+            }
+        }
+        Random rand = new Random();
+        Point random = coords.get(rand.nextInt(coords.size()));
+        if(board.currentPlayer == 0) {
+            pseudo.gameBoard[random.i][random.j][random.p].setValue(1);
+        } else {
+            pseudo.gameBoard[random.i][random.j][random.p].setValue(2);
+        }
+        if(!this.states.containsKey(pseudo) || depth == 64) {
+            return random;
+        }
+        depth++;
 
+        return explore(board, depth);
     }
 
     public Point exploit(Board board) {
         double[][][] value = this.states.get(board);
+        
     }
 
 
