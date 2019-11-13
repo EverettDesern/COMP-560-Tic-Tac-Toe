@@ -11,8 +11,8 @@ If successful, you should be prompted with a task to enter three numbers.
 When entering a number, type the number and then press enter.
 
 For example,
-100 <PRESS ENTER>
-200 <PRESS ENTER>
-500 <PRESS ENTER>
+100 <br>
+200 <br>
+500 <br>
 
 For each number imputted, there should be 64 utility values, which represent each individual square in the game board.
