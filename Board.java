@@ -57,7 +57,7 @@ public class Board {
     public void playerMove(int symbol, int i, int j, int p) {
         if(this.gameBoard[i][j][p] == 0) {
             this.gameBoard[i][j][p] = symbol;
-            //printBoard();
+            printBoard();
         }
         if(isGameFull()) {
             //System.out.println("Tie!");

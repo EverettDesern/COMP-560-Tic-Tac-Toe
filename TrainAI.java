@@ -22,7 +22,7 @@ public class TrainAI {
                 int j = coordinates.j;
                 int p = coordinates.p;
                 newGame.humanMove(e, j, p);
-                System.out.println(AIOne.states.size());
+                //System.out.println(AIOne.states.size());
                 if(!(newGame.won == 0 && newGame.full == false)) {
                     rewardOrPunish(newGame, AIOne, AITwo);
                     break;
@@ -88,6 +88,14 @@ public class TrainAI {
         Board humanGame = new Board(4);
         // while game is not full or won, play the game.
         while(humanGame.won == 0 && humanGame.full == false) {
+            Point coordinates = AIOne.selectMove(humanGame);
+            int e = coordinates.i;
+            int f = coordinates.j;
+            int g = coordinates.p;
+            humanGame.aiMove(e, f, g);
+            if(!(humanGame.won == 0 && humanGame.full == false)) {
+                break;
+            }
             // play game
             System.out.print("Enter coordinate i: ");
             int i = scan.nextInt();
@@ -96,14 +104,6 @@ public class TrainAI {
             System.out.print("Enter coordinate p: ");
             int p = scan.nextInt();
             humanGame.humanMove(i,j,p);
-            if(!(humanGame.won == 0 && humanGame.full == false)) {
-                break;
-            }
-            Point coordinates = AIOne.selectMove(humanGame);
-            int e = coordinates.i;
-            int f = coordinates.j;
-            int g = coordinates.p;
-            humanGame.aiMove(e, f, g);
             if(!(humanGame.won == 0 && humanGame.full == false)) {
                 break;
             }
