@@ -22,6 +22,7 @@ public class TrainAI {
                 int j = coordinates.j;
                 int p = coordinates.p;
                 newGame.humanMove(e, j, p);
+                System.out.println(AIOne.states.size());
                 if(!(newGame.won == 0 && newGame.full == false)) {
                     rewardOrPunish(newGame, AIOne, AITwo);
                     break;
@@ -38,6 +39,9 @@ public class TrainAI {
                 }
             }
             System.out.println("AIOne wins: " + AIOne.wins + " AITwo win: " + AITwo.wins);
+            if(i == epochs-1) {
+                //System.out.println();
+            }
         }
         // print utility values for each tile.. need to implement
     }
@@ -76,19 +80,36 @@ public class TrainAI {
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter number of epochs");
         int num = scan.nextInt();
-        scan.close();
         TrainAI trainer = new TrainAI();
         trainer.train(num, AIOne, AITwo);
 
         // once we reach here, we're done training and are ready to play against a human.
-        //AIOne.exploration = 0.0;
-
+        AIOne.exploration = 0.0;
+        Board humanGame = new Board(4);
         // while game is not full or won, play the game.
-        //while(game.won == false || game.full == false) {
+        while(humanGame.won == 0 && humanGame.full == false) {
             // play game
-        //}
-        //*/
+            System.out.print("Enter coordinate i: ");
+            int i = scan.nextInt();
+            System.out.print("Enter coordinate j: ");
+            int j = scan.nextInt();
+            System.out.print("Enter coordinate p: ");
+            int p = scan.nextInt();
+            humanGame.humanMove(i,j,p);
+            if(!(humanGame.won == 0 && humanGame.full == false)) {
+                break;
+            }
+            Point coordinates = AIOne.selectMove(humanGame);
+            int e = coordinates.i;
+            int f = coordinates.j;
+            int g = coordinates.p;
+            humanGame.aiMove(e, f, g);
+            if(!(humanGame.won == 0 && humanGame.full == false)) {
+                break;
+            }
     }
+    scan.close();
+}
 
 
 

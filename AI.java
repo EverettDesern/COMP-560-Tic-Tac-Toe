@@ -160,24 +160,25 @@ import java.util.*;
     }
 
     public Point explore(Board board, int depth) {
+        //System.out.println("hi");
         List<Point> coords = new ArrayList<>();
         Board pseudo = new Board(4);
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
                 for(int p = 0; p < 4; p++) {
-                    if(board.gameBoard[i][j][p].getValue() == 0) {
+                    if(board.gameBoard[i][j][p] == 0) {
                         coords.add(new Point(i, j, p));
                     }
-                    pseudo.gameBoard[i][j][p].setValue(board.gameBoard[i][j][p].getValue());
+                    pseudo.gameBoard[i][j][p] = board.gameBoard[i][j][p];
                 }
             }
         }
         Random rand = new Random();
         Point random = coords.get(rand.nextInt(coords.size()));
         if(board.currentPlayer == 0) {
-            pseudo.gameBoard[random.i][random.j][random.p].setValue(1);
+            pseudo.gameBoard[random.i][random.j][random.p] = 1;
         } else {
-            pseudo.gameBoard[random.i][random.j][random.p].setValue(2);
+            pseudo.gameBoard[random.i][random.j][random.p] = 2;
         }
         if(!this.states.containsKey(pseudo) || depth == 64) {
             return random;
@@ -189,12 +190,13 @@ import java.util.*;
 
     public Point exploit(Board board) {
         double[][][] value = this.states.get(board);
+        System.out.println("hi");
         HashMap<Point, Double> link = new HashMap<>();
         List<Point> coords = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
                 for(int p = 0; p < 4; p++) {
-                    if(board.gameBoard[i][j][p].getValue() == 0) {
+                    if(board.gameBoard[i][j][p] == 0) {
                         coords.add(new Point(i, j, p));
                     }
                 }
