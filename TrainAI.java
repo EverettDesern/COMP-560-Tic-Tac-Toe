@@ -1,8 +1,14 @@
 import java.util.Scanner;
 
 public class TrainAI {
+    public int num;
+    public int num2;
+    public int num3;
 
     public TrainAI() {
+        num = 0;
+        num2 = 0;
+        num3 = 0;
 
     }
 
@@ -15,15 +21,31 @@ public class TrainAI {
 
         for(int i = 0; i < epochs; i++) {
             Board newGame = new Board(4);
+            if(i == this.num || i == this.num2 || i == this.num3-1) {
+                if(i == this.num) {
+                    System.out.println("-------------------------------------");
+                    System.out.println("TRAINING NUMBER: " + this.num);
+                    System.out.println("-------------------------------------");
+                }
+                if(i == this.num2) {
+                    System.out.println("-------------------------------------");
+                    System.out.println("TRAINING NUMBER: " + this.num2);
+                    System.out.println("-------------------------------------");
+                }
+                if(i == this.num3-1) {
+                    System.out.println("-------------------------------------");
+                    System.out.println("TRAINING NUMBER: " + this.num3);
+                    System.out.println("-------------------------------------");
+                }
+                AIOne.printValues(newGame);
+            }
             while(newGame.won == 0 && newGame.full == false) {
-                // simulate a move.. need to implement
                 newGame.currentPlayer = 0;
                 Point coordinates = AIOne.selectMove(newGame);
                 int e = coordinates.i;
                 int j = coordinates.j;
                 int p = coordinates.p;
                 newGame.humanMove(e, j, p);
-                //System.out.println(AIOne.states.size());
                 if(!(newGame.won == 0 && newGame.full == false)) {
                     rewardOrPunish(newGame, AIOne, AITwo);
                     break;
@@ -39,24 +61,7 @@ public class TrainAI {
                     break;
                 }
             }
-            //System.out.println("AIOne wins: " + AIOne.wins + " AITwo win: " + AITwo.wins);
-            //if(i == epochs-2) {
-                //AIOne.print = true;
-                //for (int s = 0; s < 4; s++) {
-                    //for (int j = 0; j < 4; j++) {
-                        //for (int p = 0; p < 4; p++) {
-                            //if(AIOne.value[s][j][p] > 0) {
-                                //System.out.print(AIOne.value[s][j][p]);
-                                //System.out.print(" ");
-                            //}
-                        //}
-                        //System.out.println(" ");
-                    //}
-                    //System.out.println(" ");
-                //}
-            //}
         }
-        // print utility values for each tile.. need to implement
     }
 
     // this method checks which AI has won and rewards/punishes the AIs.
@@ -84,21 +89,18 @@ public class TrainAI {
         // player 1
         AI AITwo = new AI();
         Board game = new Board(4);
-        //game.humanMove(0,0,0);
-        //game.humanMove(1,1,1);
-        //game.humanMove(2,2,2);
-        //game.humanMove(3,3,3);
-        //game.printBoard();
 
         Scanner scan = new Scanner(System.in);
-        System.out.println("Enter number of epochs");
-        int num = scan.nextInt();
+        System.out.println("Enter three numbers for the amount of training");
         TrainAI trainer = new TrainAI();
-        trainer.train(num, AIOne, AITwo);
+        trainer.num = scan.nextInt();
+        trainer.num2 = scan.nextInt();
+        trainer.num3 = scan.nextInt();
+        trainer.train(trainer.num3, AIOne, AITwo);
 
         // once we reach here, we're done training and are ready to play against a human.
         AIOne.exploration = 0.0;
-        AIOne.print = true;
+        //AIOne.print = true;
         Board humanGame = new Board(4);
         // while game is not full or won, play the game.
         while(humanGame.won == 0 && humanGame.full == false) {

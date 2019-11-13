@@ -1,6 +1,5 @@
 import java.util.*;
 
-    
     public class AI {
 	public double learningRate;
     public double exploration;
@@ -12,7 +11,6 @@ import java.util.*;
     public ArrayList<Point> actions;
     public int wins;
     public boolean print;
-    //public float[][][] value;
 
 	public AI() {
         this.learningRate = 0.5;
@@ -24,13 +22,10 @@ import java.util.*;
         state_order = new ArrayList<>();
         actions = new ArrayList<>();
         print = false;
-        //float[][][] value;
 
     }
 
-    // this method changes the utility values of each tile, based on if we are rewarding it
-    // or punishing it.
-
+    // this method serializes the board object. We use the serialization as a key in our HashMap.
     public String serialize(Board board) {
         String s = "";
         for(int i = 0; i < 4; i++) {
@@ -43,6 +38,8 @@ import java.util.*;
         return s;
     }
 
+    // this method assigns utility values to each tile in the board. It does this by using a reinforcement learning
+    // technique called "Temporal Difference Learning".
     public void reward(float value) {
         // if no more states or actions, return nothing.
         if(this.state_order.size() == 0 && this.actions.size() == 0) {
@@ -53,8 +50,6 @@ import java.util.*;
         HashMap<String, Point> map1 = this.state_order.get(this.state_order.size()-1);
         this.state_order.remove(this.state_order.size()-1);
 
-        //Point action = this.actions.get(this.actions.size()-1);
-        //this.actions.remove(this.actions.size()-1);
         String newState = "";
         for(String b : map1.keySet()) {
             newState = b;
@@ -89,31 +84,32 @@ import java.util.*;
         // put this new value into the hashmap.
         this.states.replace(newState, nextState);
 
+        // do while the stack is not empty.
         while(this.state_order.size() > 0) {
-
             // pop things from the stack
             HashMap<String, Point> mapp = this.state_order.get(this.state_order.size()-1);
             this.state_order.remove(this.state_order.size()-1);
     
-            //Point action = this.actions.get(this.actions.size()-1);
-            //this.actions.remove(this.actions.size()-1);
             String state = "";
             for(String b : mapp.keySet()) {
                 state = b;
             }
             Point action = mapp.get(state);
 
-            // change the reward value by decaying it.
+            // change the reward value by multiplying it by 1.5.. this is an arbitrary number.
             value *= 1.5;
 
 
             // if states contains this board
+            // this section of code calls our temporal difference learning method and updates
+            // the value into our 3D array consisting of ultity values.
             if(this.states.containsKey(state)) {
                 float[][][] result = temporalDifference(value, state, newState);
                 double use = result[newAction.i][newAction.j][newAction.p];
                 value += use;
                 float[][][] nexttState = this.states.get(state);
                 nexttState[action.i][action.j][action.p] = value;
+                // replace the old entry with a new one containing our new utility value.
                 this.states.replace(state, nexttState);
             } else {
                 float[][][] zeroo = new float[4][4][4];
@@ -124,6 +120,7 @@ import java.util.*;
                         }
                     }
                 }
+                // initialize the hashmap entry with a zero matrix.
                 this.states.put(state, zeroo);
                 float[][][] result = temporalDifference(value, state, newState);
                 float use = result[newAction.i][newAction.j][newAction.p];
@@ -132,6 +129,7 @@ import java.util.*;
                 nexttState[action.i][action.j][action.p] = value;
                 this.states.replace(state, nexttState);
             }
+            // update pointers
             newState = state;
             newAction = action;
         }
@@ -139,6 +137,14 @@ import java.util.*;
     
 
     // this method updates utility values.
+    // the forula for a temporal difference learning method is 
+    // X = X + a(v(G) - S).
+    // Where:
+    // X is the 3D matrix that holds the final utility values after this formula.
+    // a is a scalar learning rate.
+    // G is a 3D matrix consisting of the "current" state we are looking at/updating a reward value to.
+    // v is a scalar representing the "reward" value that we need to assign.
+    // S is a 3D matrix consisting of the "previous" state that we need to subtract the current state from.
     public float[][][] temporalDifference(float reward, String key, String newKey) {
         float[][][] state = new float[4][4][4];
         float[][][] updated = new float[4][4][4];
@@ -167,8 +173,6 @@ import java.util.*;
             for(int j = 0; j < 4; j++) {
                 for(int p = 0; p < 4; p++) {
                     updated[i][j][p] = actual[i][j][p] - state[i][j][p];
-                    //updated[i][j][p] = actual[i][j][p] - state[i][j][p];
-                    //updated[i][j][p] = (float) (updated[i][j][p] * this.learningRate);
                 }
             }
         }
@@ -185,14 +189,15 @@ import java.util.*;
         return updated;
     }
 
+    // this method adds to our stack.
     public void setState(Board old, Point action) {
         HashMap<String, Point> addition = new HashMap<>();
         String s = serialize(old);
         addition.put(s,action);
         this.state_order.add(addition);
-        //this.actions.add(action);
     }
 
+    // this method is used when the AI makes a new move. It either explores or exploits the board.
     public Point selectMove(Board board) {
         double number = Math.random();
         String s = serialize(board);
@@ -212,8 +217,9 @@ import java.util.*;
         return action;
     }
 
+    // this the exploration in a markov decision process. It looks at all of the values in the
+    // board and picks one to see if it improves our utility function.
     public Point explore(Board board, int depth) {
-        //System.out.println("hi");
         List<Point> coords = new ArrayList<>();
         Board pseudo = new Board(4);
         for(int i = 0; i < 4; i++) {
@@ -242,14 +248,12 @@ import java.util.*;
         return explore(board, depth);
     }
 
-    public Point exploit(Board board) {
-        String s = serialize(board);
-        //String zo = "0000000000000000000000000000000000000000000000000000000000000000";
+    // this method prints each training instance.
+    public void printValues(Board board) {
+        String s = "0000000000000000000000000000000000000000000000000000000000000000";
         float[][][] value = this.states.get(s);
-        //System.out.println(value[0][0][0]);
-        if(this.print == true) {
-            //if(s == zo) {
             for (int i = 0; i < 4; i++) {
+                System.out.println("DIMENSION: " + (i+1));
                 for (int j = 0; j < 4; j++) {
                     for (int p = 0; p < 4; p++) {
                         System.out.print(value[i][j][p]);
@@ -259,7 +263,14 @@ import java.util.*;
                 }
                 System.out.println(" ");
             }
-        }
+    }
+
+    // this method is the exploitation in a markov decision process. It calculates the ultity values
+    // of each tile and chooses the best one.
+    
+    public Point exploit(Board board) {
+        String s = serialize(board);
+        float[][][] value = this.states.get(s);
         HashMap<Point, Float> link = new HashMap<>();
         List<String> coords = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
@@ -270,7 +281,6 @@ import java.util.*;
                         temp += i;
                         temp += j;
                         temp += p;
-                        //Point temp = new Point(i, j, p);
                         coords.add(temp);
                     }
                 }

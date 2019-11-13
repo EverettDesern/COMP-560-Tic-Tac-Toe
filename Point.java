@@ -1,5 +1,6 @@
 
 public class Point{
+    // this class represents a 3D coordinate.
     public int i;
     public int j;
     public int p;
