@@ -148,10 +148,22 @@ import java.util.*;
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 4; j++) {
                 for(int p = 0; p < 4; p++) {
-
-                    // formula for temporal difference learning.
-                    actual[i][j][p] = actual[i][j][p] * reward;
+                    actual[i][j][p] = (float) (actual[i][j][p] * 1.15);
+                }
+            }
+        }
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
                     updated[i][j][p] = actual[i][j][p] - state[i][j][p];
+                    //updated[i][j][p] = actual[i][j][p] - state[i][j][p];
+                    //updated[i][j][p] = (float) (updated[i][j][p] * this.learningRate);
+                }
+            }
+        }
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 4; j++) {
+                for(int p = 0; p < 4; p++) {
                     updated[i][j][p] = (float) (updated[i][j][p] * this.learningRate);
                 }
             }

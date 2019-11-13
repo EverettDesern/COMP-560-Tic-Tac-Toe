@@ -17,6 +17,7 @@ public class TrainAI {
             Board newGame = new Board(4);
             while(newGame.won == 0 && newGame.full == false) {
                 // simulate a move.. need to implement
+                newGame.currentPlayer = 0;
                 Point coordinates = AIOne.selectMove(newGame);
                 int e = coordinates.i;
                 int j = coordinates.j;
@@ -27,7 +28,7 @@ public class TrainAI {
                     rewardOrPunish(newGame, AIOne, AITwo);
                     break;
                 }
-
+                newGame.currentPlayer = 1;
                 Point coordinates2 = AITwo.selectMove(newGame);
                 int t = coordinates2.i;
                 int b = coordinates2.j;
@@ -88,6 +89,7 @@ public class TrainAI {
         Board humanGame = new Board(4);
         // while game is not full or won, play the game.
         while(humanGame.won == 0 && humanGame.full == false) {
+            humanGame.currentPlayer = 0;
             Point coordinates = AIOne.selectMove(humanGame);
             int e = coordinates.i;
             int f = coordinates.j;
@@ -97,6 +99,7 @@ public class TrainAI {
                 break;
             }
             // play game
+            humanGame.currentPlayer = 1;
             System.out.print("Enter coordinate i: ");
             int i = scan.nextInt();
             System.out.print("Enter coordinate j: ");
