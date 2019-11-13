@@ -10,7 +10,7 @@ If successful, you should be prompted with a task to enter three numbers.
 
 When entering a number, type the number and then press enter.
 
-For example,
+For example: <br>
 100 <br>
 200 <br>
 500 <br>
