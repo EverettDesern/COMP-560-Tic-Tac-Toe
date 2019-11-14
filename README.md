@@ -23,3 +23,10 @@ Group Members: <br>
 Everett Desern <br>
 Yosef Saleh <br>
 David Firrincieli
+
+Contributions:
+We all worked together for the most part in person, but had a few individual contributions as well
+Everett: Implemented the Board class, AI class, Point class, Tile class, and the TrainAI class
+David: Implemented Board class, AI class
+Yosef: Implemented Board class, AI class
+Together: Discussed the logic behind all the classes and the utility algorithm. And we all debugged all the classes together. 
